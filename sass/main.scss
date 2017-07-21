@@ -5,13 +5,12 @@ body {
 }
 
 .container {
-  min-height: 985px;
+  text-align: center;
   width: 100%;
-  max-width: 1000px;
   border-radius: 5px;
-  padding: 40px 0;
   overflow: hidden;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 
