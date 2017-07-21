@@ -17,6 +17,7 @@
   },
   "homepage": "",
   "dependencies": {
+    "google-map-react": "^0.24.0",
     "react": "^15.4.0",
     "react-dom": "^15.4.0"
   },
@@ -30,6 +31,7 @@
     "gulp-autoprefixer": "^3.1.1",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.6.0",
-    "webpack": "^2.2.1"
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.5.1"
   }
 }

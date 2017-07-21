@@ -10,15 +10,21 @@ export class Stats extends React.Component {
         }
 
         const chosenCountry = this.props.chosenCountry.slice();
+        const style = {
+            height: '100vh',
+            background: `url(${chosenCountry[0].flag}) center center / 100% no-repeat transparent`,
+        };
         return (
-            <div>
+            <div style={style}>
                 <h2>Tu będą statystyki</h2>
                 <ul>
-                <li key={chosenCountry[0].name}>Nazwa pańswa: {chosenCountry[0].name}</li>
-                <li key={chosenCountry[0].capital}>Nazwa stolicy: {chosenCountry[0].capital}</li>
-                <li key={chosenCountry[0].population}>Populacja: {chosenCountry[0].population}</li>
-                <li key={chosenCountry[0].area}>Powierzchnia: {chosenCountry[0].area}</li>
-                <li key={chosenCountry[0].currencies}>Waluta: {chosenCountry[0].currencies[0].name}</li>
+                    <li key={chosenCountry[0].name}>
+                        Nazwa pańswa: {chosenCountry[0].name}
+                    </li>
+                    <li key={chosenCountry[0].capital}>Nazwa stolicy: {chosenCountry[0].capital}</li>
+                    <li key={chosenCountry[0].population}>Populacja: {chosenCountry[0].population}</li>
+                    <li key={chosenCountry[0].area}>Powierzchnia: {chosenCountry[0].area}</li>
+                    <li key={chosenCountry[0].currencies}>Waluta: {chosenCountry[0].currencies[0].name}</li>
                 </ul>
             </div>
         )

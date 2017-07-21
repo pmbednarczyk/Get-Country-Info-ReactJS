@@ -31,6 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                     population: e.population,
                                     area: e.area,
                                     currencies: e.currencies,
+                                    flag: e.flag,
+                                    latlng: e.latlng,
                                 }
                             ]
                         }
@@ -91,6 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     population: e.country[0].population,
                     area: e.country[0].area,
                     currencies: e.country[0].currencies,
+                    flag: e.country[0].flag,
+                    latlng: e.country[0].latlng,
                 }
             });
 
@@ -120,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     />
                     <Map
                         showStats={this.state.showStats}
+                        chosenCountry={this.state.chosenCountry}
                     />
                 </div>
             )
