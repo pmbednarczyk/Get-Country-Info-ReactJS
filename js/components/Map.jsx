@@ -23,12 +23,12 @@ export class Map extends React.Component {
 
     render() {
         // Show this if data is fetching...
-        // if (!this.state.answer) {
-        //     return <span className="loading">Loading...</span>;
-        // }
+        if (this.props.showStats === false) {
+            return null;
+        }
         return (
             <div>
-                <h2>Tu będzie mapa</h2>
+                <h2>Tu będzie piekna mapa</h2>
             </div>
         )
     }
