@@ -17,6 +17,7 @@ body {
   min-height: 100vh;
 }
 
+/* Search.jsx*/
 .search-container {
   &__title {
     font-size: 2.2em;
@@ -64,7 +65,7 @@ body {
     }
   }
 }
-
+/* Stats.jsx*/
 .stats-container {
   &__title {
     font-size: 3em;
@@ -94,11 +95,13 @@ body {
   }
 }
 
-
+/* Map.jsx*/
 .map-container {
   width: 100%;
-  height: 100vh;
   &__title {
     font-size: 2.2em;
+  }
+  &__map {
+    height: 100vh;
   }
 }

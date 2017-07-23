@@ -10929,12 +10929,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-function createMapOptions(maps) {
+function createMapOptions() {
     return {
         panControl: false,
         mapTypeControl: false,
         scrollwheel: false,
-        styles: [{ stylers: [{ 'saturation': -100 }, { 'gamma': 0.8 }, { 'lightness': 4 }, { 'visibility': 'on' }] }]
+        styles: [{
+            stylers: [{ 'saturation': -100 }, { 'gamma': 0.8 }, { 'lightness': 4 }, { 'visibility': 'on' }]
+        }]
     };
 };
 
@@ -10950,7 +10952,7 @@ var Map = exports.Map = function (_React$Component) {
     _createClass(Map, [{
         key: 'render',
         value: function render() {
-            // Show this if data is fetching...
+            // Check if map data is ready
             if (this.props.showStats === false || this.props.chosenCountry[0].latlng[0] === '' || this.props.chosenCountry[0].latlng[1] === '') {
                 return null;
             }
@@ -10968,13 +10970,17 @@ var Map = exports.Map = function (_React$Component) {
                     { className: 'map-container__title' },
                     'See the country on the map:'
                 ),
-                _react2.default.createElement(_googleMapReact2.default, {
-                    key: this.props.chosenCountry[0].latlng[0] + this.props.chosenCountry[0].latlng[1],
-                    defaultCenter: defaultCenter,
-                    apiKey: 'AIzaSyDy3Yu9UF39Vii-T9q3SraPeOwqtYlBhrM',
-                    defaultZoom: 6,
-                    options: createMapOptions
-                })
+                _react2.default.createElement(
+                    'div',
+                    { className: 'map-container__map' },
+                    _react2.default.createElement(_googleMapReact2.default, {
+                        key: this.props.chosenCountry[0].latlng[0] + this.props.chosenCountry[0].latlng[1],
+                        defaultCenter: defaultCenter,
+                        apiKey: 'AIzaSyDy3Yu9UF39Vii-T9q3SraPeOwqtYlBhrM',
+                        defaultZoom: 6,
+                        options: createMapOptions
+                    })
+                )
             );
         }
     }]);
