@@ -3,7 +3,6 @@ import React from 'react';
 export class Search extends React.Component {
 
 
-
     render() {
         // Show this if data is fetching...
         if (this.props.allCountries.length <= 1) {
@@ -11,16 +10,21 @@ export class Search extends React.Component {
         }
 
         return (
-            <div>
-                <h1>Wyszukiwarka</h1>
-                Wpisz państwo, o którym chcesz się czegoś dowiedzieć.
-                <div>
-                    <input type="text"
-                           onChange={this.props.handleSearchChange}
-                           value={this.props.searchValue}
-                           placeholder="Ex: Poland, Germany, France..."
+            <div className="search-container">
+                <span className="search-container__title">Get Country Info!</span>
+                <span className="search-container__desc">Type country name you want to discover...</span>
+                <div className="input-container">
+                    <input
+                        className="input-container__input"
+                        type="text"
+                        onChange={this.props.handleSearchChange}
+                        value={this.props.searchValue}
+                        placeholder="Ex: Poland, Germany, France..."
                     />
-                    <ul>
+                    <ul
+                        className="input-container__list"
+                        style={{display: this.props.showPotentialCountries ? "block" : "none"}}
+                    >
                         {this.props.getCountryPropositions()}
                     </ul>
                 </div>

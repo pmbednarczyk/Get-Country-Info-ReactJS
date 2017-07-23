@@ -10,11 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
             super(...arguments);
             this.state = {
                 potentialCountries: [],
+                showPotentialCountries: false,
                 searchValue: '',
                 allCountries: [],
                 showStats: false,
-                showMap: false,
                 chosenCountry: null,
+
             };
         }
 
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const allCountries = this.state.allCountries.slice();
 
             const potentialCountries = allCountries.filter((e) => {
-                return e.country[0].name.includes(searchValue);
+                return e.country[0].name.toLowerCase().includes(searchValue.toLowerCase());
             }).map(function (e) {
                 return e.country[0].name
             });
@@ -58,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.setState({
                 searchValue: searchValue,
                 potentialCountries: potentialCountries,
+                showPotentialCountries: true,
             });
 
             console.log(`Search value: ${searchValue}`);
@@ -69,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const countryPropositions = this.state.potentialCountries.map((country, i) => {
                     console.log(`Search value: ${country}`);
                     return <li
+                        className="input-container__list-item"
                         onClick={event => this.handleCountryClick(country, i)}
                         key={country + i}>
                         {country}
@@ -98,11 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            console.log(`Państwo: ${country}, numer: ${i}, wiecej info: ${chosenCountry[0].capital} `);
-
             this.setState({
                 showStats: true,
-                chosenCountry: chosenCountry
+                chosenCountry: chosenCountry,
+                showPotentialCountries: false,
             });
 
         };
@@ -117,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         handleCountryClick={this.handleCountryClick}
                         allCountries={this.state.allCountries}
                         searchValue={this.state.searchValue}
+                        showPotentialCountries={this.state.showPotentialCountries}
                     />
                     <Stats
                         showStats={this.state.showStats}

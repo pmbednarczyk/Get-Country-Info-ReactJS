@@ -1,7 +1,7 @@
 import React from 'react';
+const NumberFormat = require('react-number-format');
 
 export class Stats extends React.Component {
-
 
     render() {
         // Show this if data is fetching...
@@ -10,22 +10,32 @@ export class Stats extends React.Component {
         }
 
         const chosenCountry = this.props.chosenCountry.slice();
-        const style = {
-            height: '100vh',
-            background: `url(${chosenCountry[0].flag}) center center / 100% no-repeat transparent`,
-        };
+        const population = <NumberFormat value={chosenCountry[0].population} displayType={'text'} thousandSeparator={true}/>;
+        const area = <NumberFormat value={chosenCountry[0].area} displayType={'text'} thousandSeparator={true}/>;
         return (
-            <div style={style}>
-                <h2>Tu będą statystyki</h2>
-                <ul>
-                    <li key={chosenCountry[0].name}>
-                        Nazwa pańswa: {chosenCountry[0].name}
+            <div className="stats-container">
+                <h1 className="stats-container__title">{chosenCountry[0].name}</h1>
+                <ul className="stats-container__list">
+                    <li className="stats-container__item"
+                        key={chosenCountry[0].capital}>
+                        Capital city: {chosenCountry[0].capital}
                     </li>
-                    <li key={chosenCountry[0].capital}>Nazwa stolicy: {chosenCountry[0].capital}</li>
-                    <li key={chosenCountry[0].population}>Populacja: {chosenCountry[0].population}</li>
-                    <li key={chosenCountry[0].area}>Powierzchnia: {chosenCountry[0].area}</li>
-                    <li key={chosenCountry[0].currencies}>Waluta: {chosenCountry[0].currencies[0].name}</li>
+                    <li className="stats-container__item"
+                        key={chosenCountry[0].population}>
+                        Population: {population} citizens
+                    </li>
+                    <li className="stats-container__item"
+                        key={chosenCountry[0].area}>
+                        Area: {area} square kilometers
+                    </li>
+                    <li className="stats-container__item"
+                        key={chosenCountry[0].currencies}>
+                        Currency name: {chosenCountry[0].currencies[0].name}
+                    </li>
                 </ul>
+                <img className="stats-container__img"
+                     src={chosenCountry[0].flag}
+                />
             </div>
         )
     }
