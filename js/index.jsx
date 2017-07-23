@@ -61,30 +61,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 potentialCountries: potentialCountries,
                 showPotentialCountries: true,
             });
-
-            console.log(`Search value: ${searchValue}`);
         };
 
         // Searching country while typing
         getCountryPropositions = () => {
-            if (this.state.searchValue.length >= 3) {
-                const countryPropositions = this.state.potentialCountries.map((country, i) => {
-                    console.log(`Search value: ${country}`);
+            if (this.state.searchValue.length >= 3 && this.state.potentialCountries.length > 0) {
+                const countryPropositions = this.state.potentialCountries.map((country, i, array) => {
                     return <li
                         className="input-container__list-item"
                         onClick={event => this.handleCountryClick(country, i)}
                         key={country + i}>
                         {country}
                     </li>;
-
                 });
                 return countryPropositions
+            } else if (this.state.searchValue.length >= 3 && this.state.potentialCountries.length < 1) {
+                console.log("Nie ma takiego kraju.");
+                const noCountry = (
+                    <li
+                        className="input-container__list-item input-container__list-item--not-found">
+                        Cannot find such country. Try another name! ;)
+                    </li>
+                );
+                return noCountry
             }
         };
 
-
         // Generating country stats
-        handleCountryClick = (country, i) => {
+        handleCountryClick = (country) => {
             const allCountries = this.state.allCountries.slice();
 
             const chosenCountry = allCountries.filter((e) => {
@@ -108,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
         };
-
 
         render() {
             return (

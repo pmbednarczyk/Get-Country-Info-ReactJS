@@ -11229,14 +11229,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     potentialCountries: potentialCountries,
                     showPotentialCountries: true
                 });
-
-                console.log('Search value: ' + searchValue);
             };
 
             _this.getCountryPropositions = function () {
-                if (_this.state.searchValue.length >= 3) {
-                    var countryPropositions = _this.state.potentialCountries.map(function (country, i) {
-                        console.log('Search value: ' + country);
+                if (_this.state.searchValue.length >= 3 && _this.state.potentialCountries.length > 0) {
+                    var countryPropositions = _this.state.potentialCountries.map(function (country, i, array) {
                         return _react2.default.createElement(
                             'li',
                             {
@@ -11249,10 +11246,19 @@ document.addEventListener('DOMContentLoaded', function () {
                         );
                     });
                     return countryPropositions;
+                } else if (_this.state.searchValue.length >= 3 && _this.state.potentialCountries.length < 1) {
+                    console.log("Nie ma takiego kraju.");
+                    var noCountry = _react2.default.createElement(
+                        'li',
+                        {
+                            className: 'input-container__list-item input-container__list-item--not-found' },
+                        'Cannot find such country. Try another name! ;)'
+                    );
+                    return noCountry;
                 }
             };
 
-            _this.handleCountryClick = function (country, i) {
+            _this.handleCountryClick = function (country) {
                 var allCountries = _this.state.allCountries.slice();
 
                 var chosenCountry = allCountries.filter(function (e) {
