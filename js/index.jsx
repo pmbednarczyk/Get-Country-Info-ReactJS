@@ -5,140 +5,136 @@ import {Stats} from './components/Stats.jsx';
 import {Map} from './components/Map.jsx';
 
 document.addEventListener('DOMContentLoaded', () => {
-    class App extends React.Component {
-        constructor() {
-            super(...arguments);
-            this.state = {
-                potentialCountries: [],
-                showPotentialCountries: false,
-                searchValue: '',
-                allCountries: [],
-                showStats: false,
-                chosenCountry: null,
+	class App extends React.Component {
+		constructor() {
+			super(...arguments);
+			this.state = {
+				potentialCountries: [],
+				showPotentialCountries: false,
+				searchValue: '',
+				allCountries: [],
+				showStats: false,
+				chosenCountry: null,
+				loaded: false,
+			};
+		}
 
-            };
-        }
-
-        componentDidMount() {
-            fetch(`https://restcountries.eu/rest/v2/all`)
-                .then(r => r.json())
-                .then(data => {
-                    const allCountries = data.map((e) => {
-                        return {
-                            country: [
-                                {
-                                    name: e.name,
-                                    capital: e.capital,
-                                    population: e.population,
-                                    area: e.area,
-                                    currencies: e.currencies,
-                                    flag: e.flag,
-                                    latlng: e.latlng,
-                                }
-                            ]
-                        }
-                    });
-                    this.setState({
-                        allCountries: allCountries
-                    });
-                });
-        }
+		componentDidMount() {
+			fetch(`https://restcountries.eu/rest/v2/all`)
+			.then(r => r.json())
+			.then(data => {
+				const allCountries = data.map(e => (
+					{
+						country: {
+							name: e.name,
+							capital: e.capital,
+							population: e.population,
+							area: e.area,
+							currencies: e.currencies,
+							flag: e.flag,
+							latlng: e.latlng,
+						}
+					}));
+				this.setState({
+					allCountries,
+					loaded: true,
+				});
+			});
+		}
 
 
-        // Searching country while typing
-        handleSearchChange = event => {
-            const searchValue = event.target.value;
-            const allCountries = this.state.allCountries.slice();
+		// Searching country while typing
+		handleSearchChange = event => {
+			const searchValue = event.target.value;
 
-            const potentialCountries = allCountries.filter((e) => {
-                return e.country[0].name.toLowerCase().includes(searchValue.toLowerCase());
-            }).map(function (e) {
-                return e.country[0].name
-            });
+			if (searchValue.length < 2) {
+				return this.setState({
+					searchValue
+				})
+			}
 
-            this.setState({
-                searchValue: searchValue,
-                potentialCountries: potentialCountries,
-                showPotentialCountries: true,
-            });
-        };
+			const allCountries = [...this.state.allCountries];
+			const checkIfCountryMatch = name => name.toLowerCase().includes(searchValue.toLowerCase());
+			const potentialCountries = allCountries.filter(e => (
+				checkIfCountryMatch(e.country.name)
+			)).map(e => e.country.name);
 
-        // Searching country while typing
-        getCountryPropositions = () => {
-            if (this.state.searchValue.length >= 3 && this.state.potentialCountries.length > 0) {
-                const countryPropositions = this.state.potentialCountries.map((country, i, array) => {
-                    return <li
-                        className="input-container__list-item"
-                        onClick={event => this.handleCountryClick(country, i)}
-                        key={country + i}>
-                        {country}
-                    </li>;
-                });
-                return countryPropositions
-            } else if (this.state.searchValue.length >= 3 && this.state.potentialCountries.length < 1) {
-                console.log("Nie ma takiego kraju.");
-                const noCountry = (
-                    <li
-                        className="input-container__list-item input-container__list-item--not-found">
-                        Cannot find such country. Try another name! ;)
-                    </li>
-                );
-                return noCountry
-            }
-        };
+			this.setState({
+				searchValue,
+				potentialCountries,
+				showPotentialCountries: true,
+			});
+		};
 
-        // Generating country stats
-        handleCountryClick = (country) => {
-            const allCountries = this.state.allCountries.slice();
+		// Searching country while typing
+		getCountryPropositions = () => {
+			const { searchValue, potentialCountries } = this.state;
 
-            const chosenCountry = allCountries.filter((e) => {
-                return e.country[0].name.includes(country);
-            }).map(function (e) {
-                return {
-                    name: e.country[0].name,
-                    capital: e.country[0].capital,
-                    population: e.country[0].population,
-                    area: e.country[0].area,
-                    currencies: e.country[0].currencies,
-                    flag: e.country[0].flag,
-                    latlng: e.country[0].latlng,
-                }
-            });
+			if (searchValue.length <= 2) {
+				return null;
+			}
 
-            this.setState({
-                showStats: true,
-                chosenCountry: chosenCountry,
-                showPotentialCountries: false,
-            });
+			if (potentialCountries.length) {
+				return this.state.potentialCountries.map((country, i) => (
+						<li
+							className="input-container__list-item"
+							onClick={event => this.handleCountryClick(country, i)}
+							key={country + i}
+						>
+							{country}
+						</li>
+					)
+				);
+			}
 
-        };
+			return (
+				<li className="input-container__list-item input-container__list-item--not-found">
+					Cannot find such country. Try another name! ;)
+				</li>
+			);
+		};
 
-        render() {
-            return (
-                <div className="container">
-                    <Search
-                        handleSearchChange={event => this.handleSearchChange(event)}
-                        getCountryPropositions={this.getCountryPropositions}
-                        handleCountryClick={this.handleCountryClick}
-                        allCountries={this.state.allCountries}
-                        searchValue={this.state.searchValue}
-                        showPotentialCountries={this.state.showPotentialCountries}
-                    />
-                    <Stats
-                        showStats={this.state.showStats}
-                        chosenCountry={this.state.chosenCountry}
-                    />
-                    <Map
-                        showStats={this.state.showStats}
-                        chosenCountry={this.state.chosenCountry}
-                    />
-                </div>
-            )
-        }
-    }
+		// Generating country stats
+		handleCountryClick = country => {
+			const allCountries = this.state.allCountries.slice();
+			const chosenCountry = allCountries.find(e => (
+				 e.country.name.includes(country)
+			));
 
-    ReactDOM.render(
-        <App/>,
-        document.querySelector('#app')
-    );
+			this.setState({
+				showStats: true,
+				chosenCountry,
+				showPotentialCountries: false,
+			});
+
+		};
+
+		render() {
+			return (
+				<div className="container">
+					<Search
+						handleSearchChange={this.handleSearchChange}
+						getCountryPropositions={this.getCountryPropositions}
+						handleCountryClick={this.handleCountryClick}
+						allCountries={this.state.allCountries}
+						searchValue={this.state.searchValue}
+						showPotentialCountries={this.state.showPotentialCountries}
+					/>
+					<Stats
+						showStats={this.state.showStats}
+						chosenCountry={this.state.chosenCountry}
+					/>
+					<Map
+						showStats={this.state.showStats}
+						chosenCountry={this.state.chosenCountry}
+					/>
+				</div>
+			)
+		}
+	}
+
+	ReactDOM.render(
+		<App/>,
+		document.querySelector('#app')
+	);
 });
