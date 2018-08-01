@@ -10820,10 +10820,10 @@ function createMapOptions() {
 			stylers: [{ 'saturation': -100 }, { 'gamma': 0.8 }, { 'lightness': 4 }, { 'visibility': 'on' }]
 		}]
 	};
-};
+}
 
-var Map = exports.Map = function (_React$Component) {
-	_inherits(Map, _React$Component);
+var Map = exports.Map = function (_PureComponent) {
+	_inherits(Map, _PureComponent);
 
 	function Map() {
 		_classCallCheck(this, Map);
@@ -10840,13 +10840,16 @@ var Map = exports.Map = function (_React$Component) {
 			    chosenCountry = _props$chosenCountry === undefined ? {} : _props$chosenCountry;
 
 
-			if (!showStats || typeof chosenCountry === 'undefined' || !chosenCountry) {
+			if (!showStats || !chosenCountry) {
 				return null;
 			}
 
+			var _chosenCountry$latlng = chosenCountry.latlng,
+			    latlng = _chosenCountry$latlng === undefined ? [] : _chosenCountry$latlng;
+
 			var defaultCenter = {
-				lat: chosenCountry.latlng && chosenCountry.latlng[0],
-				lng: chosenCountry.latlng && chosenCountry.latlng[1]
+				lat: latlng && latlng[0],
+				lng: latlng && latlng[1]
 			};
 
 			return _react2.default.createElement(
@@ -10861,7 +10864,7 @@ var Map = exports.Map = function (_React$Component) {
 					'div',
 					{ className: 'map-container__map' },
 					_react2.default.createElement(_googleMapReact2.default, {
-						key: chosenCountry.latlng[0] + chosenCountry.latlng[1],
+						key: defaultCenter.lat + defaultCenter.lng,
 						defaultCenter: defaultCenter,
 						apiKey: 'AIzaSyDy3Yu9UF39Vii-T9q3SraPeOwqtYlBhrM',
 						defaultZoom: 6,
@@ -10873,7 +10876,7 @@ var Map = exports.Map = function (_React$Component) {
 	}]);
 
 	return Map;
-}(_react2.default.Component);
+}(_react.PureComponent);
 
 /***/ }),
 /* 91 */
@@ -11019,6 +11022,7 @@ var Stats = exports.Stats = function (_PureComponent) {
                 flag = chosenCountry.flag,
                 name = chosenCountry.name;
 
+            var currencyName = currencies && currencies[0] && currencies[0].name;
             var renderFormattedValue = function renderFormattedValue(value) {
                 return _react2.default.createElement(NumberFormat, { value: value, displayType: 'text', thousandSeparator: true });
             };
@@ -11062,12 +11066,10 @@ var Stats = exports.Stats = function (_PureComponent) {
                         { className: 'stats-container__item',
                             key: currencies },
                         'Currency name: ',
-                        currencies[0].name
+                        currencyName
                     )
                 ),
-                _react2.default.createElement('img', { className: 'stats-container__img',
-                    src: flag
-                })
+                _react2.default.createElement('img', { className: 'stats-container__img', alt: name, src: flag })
             );
         }
     }]);
@@ -11184,7 +11186,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 				_this.setState({
 					showStats: true,
-					chosenCountry: chosenCountry,
+					chosenCountry: chosenCountry.country,
 					showPotentialCountries: false
 				});
 			};

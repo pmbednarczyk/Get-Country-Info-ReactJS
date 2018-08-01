@@ -10,6 +10,7 @@ export class Stats extends PureComponent {
 		}
 
 		const { capital, population, area, currencies = [], flag, name } = chosenCountry;
+		const currencyName = currencies && currencies[0] && currencies[0].name;
 		const renderFormattedValue = value => (
       <NumberFormat value={value} displayType={'text'} thousandSeparator={true} />
     );
@@ -32,12 +33,10 @@ export class Stats extends PureComponent {
               </li>
               <li className="stats-container__item"
                   key={currencies}>
-                  Currency name: {currencies[0].name}
+                  Currency name: {currencyName}
               </li>
           </ul>
-          <img className="stats-container__img"
-               src={flag}
-          />
+          <img className="stats-container__img" alt={name} src={flag} />
       </div>
 		)
 	}

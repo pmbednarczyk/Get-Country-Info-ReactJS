@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			});
 		}
 
-
 		// Searching country while typing
 		handleSearchChange = event => {
 			const searchValue = event.target.value;
@@ -103,10 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			this.setState({
 				showStats: true,
-				chosenCountry,
+				chosenCountry: chosenCountry.country,
 				showPotentialCountries: false,
 			});
-
 		};
 
 		render() {
